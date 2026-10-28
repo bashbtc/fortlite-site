@@ -1,0 +1,68 @@
+/* One-time scroll reveals; transforms do not move surrounding content. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    transition: opacity 720ms cubic-bezier(.2,.65,.3,1), translate 720ms cubic-bezier(.2,.65,.3,1);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  [data-reveal="pending"] { opacity: 0; translate: 0 24px; }
+  [data-reveal="visible"], [data-reveal="pending"]:focus-within { opacity: 1; translate: 0 0; }
+}
+/* Pointer and keyboard affordances share the same visual language. */
+.principle-grid > article, .service-list > article, .bridge-audience-grid > a {
+  position: relative;
+  transition: background-color 280ms ease, transform 350ms cubic-bezier(.2,.65,.3,1), opacity 720ms ease, translate 720ms cubic-bezier(.2,.65,.3,1);
+}
+.principle-grid > article::after {
+  content: ''; position: absolute; height: 1px; background: #bc8c3c;
+  left: 0; right: 0; bottom: -12px; transform: scaleX(0); transform-origin: left;
+  transition: transform 400ms cubic-bezier(.2,.65,.3,1);
+}
+.principle-grid > article > svg, .bridge-audience-grid > a > svg {
+  transition: color 280ms ease, transform 350ms cubic-bezier(.2,.65,.3,1);
+}
+.service-list > article h3, .service-list > article p { transition: transform 350ms cubic-bezier(.2,.65,.3,1), color 280ms ease; }
+.service-list > article .icon-button { transition: color 280ms ease, background-color 280ms ease, transform 350ms cubic-bezier(.2,.65,.3,1); }
+.service-list > article .icon-button svg { transition: transform 350ms cubic-bezier(.2,.65,.3,1); }
+.service-list > article:focus-within { background-color: #eee8dc; }
+.service-list > article:focus-within h3 { color: #976b26; }
+.service-list > article:focus-within .icon-button { background: #071525; color: #e2b45f; }
+.bridge-audience-grid > a:focus-visible { background-color: #eee8dc; }
+@media (hover: hover) and (pointer: fine) {
+  .principle-grid > article:hover { transform: translateY(-5px); }
+  .principle-grid > article:hover::after { transform: scaleX(1); }
+  .principle-grid > article:hover > svg { color: #aa7729; transform: translateY(-2px); }
+  .service-list > article:hover { background-color: #eee8dc; }
+  .service-list > article:hover h3 { color: #976b26; transform: translateX(5px); }
+  .service-list > article:hover p { transform: translateX(5px); }
+  .service-list > article:hover .icon-button { background: #071525; color: #e2b45f; }
+  .service-list > article:hover .icon-button svg { transform: translate(2px,-2px); }
+  .bridge-audience-grid > a:hover { transform: translateY(-4px); }
+  .bridge-audience-grid > a:hover > svg { transform: translateY(-2px); color: #a67425; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal], .principle-grid > article, .service-list > article, .bridge-audience-grid > a,
+  .principle-grid > article::after, .principle-grid > article > svg,
+  .bridge-audience-grid > a > svg, .service-list > article h3, .service-list > article p,
+  .service-list > article .icon-button, .service-list > article .icon-button svg {
+    transition: none !important; animation: none !important; translate: none !important; transform: none !important; opacity: 1 !important;
+  }
+}
+/* Reveal delay applies to entrance only; hover feedback stays immediate. */
+@media (prefers-reduced-motion: no-preference) {
+  .bridge-theme .principle-grid > article[data-reveal],
+  .bridge-theme .service-list > article[data-reveal],
+  .bridge-theme .bridge-audience-grid > a[data-reveal] {
+    transition: background-color 280ms ease, transform 350ms cubic-bezier(.2,.65,.3,1),
+      opacity 720ms cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms),
+      translate 720ms cubic-bezier(.2,.65,.3,1) var(--reveal-delay,0ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .principle-grid > article::after { transform: scaleX(0) !important; }
+  .principle-grid > article:hover::after { transform: scaleX(1) !important; }
+}
+
+/* Fine gold dust is an ephemeral overlay; it cannot intercept clicks or focus. */
+.gold-dust{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:4;contain:strict}
+@media(prefers-reduced-motion:reduce){.gold-dust{display:none}}
+@media print{.gold-dust{display:none}}
